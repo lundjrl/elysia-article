@@ -1,8 +1,8 @@
 type Params = Record<string, string>[];
 
-const generateUrl = (params: Params) => {
+const generateUrl = (params: Params, path = '/plants/search') => {
   const token = Bun.env.API_TOKEN ?? '';
-  const url = new URL('https://trefle.io/api/v1/plants/search');
+  const url = new URL(`https://trefle.io/api/v1/${path}`);
 
   url.searchParams.set('token', token);
 
@@ -18,7 +18,7 @@ const generateUrl = (params: Params) => {
 };
 
 export const getPlants = async () => {
-  const url = generateUrl('');
+  const url = generateUrl([{}], 'plants');
 
   const response = await fetch(url);
 
@@ -26,7 +26,7 @@ export const getPlants = async () => {
 };
 
 export const getPlant = async (plant: string) => {
-  const url = generateUrl(plant);
+  const url = generateUrl([{ q: plant }], 'species');
 
   const response = await fetch(url);
 
@@ -34,5 +34,17 @@ export const getPlant = async (plant: string) => {
 };
 
 export const getPlantByGenus = async (genus: string) => {
-  const url = generateUrl();
+  const url = generateUrl([{ q: genus }], 'genus');
+
+  const response = await fetch(url);
+
+  return await response.json();
+};
+
+export const getByQuery = async (query: string) => {
+  const url = generateUrl([{ q: query }]);
+
+  const response = await fetch(url);
+
+  return await response.json();
 };
