@@ -11,9 +11,6 @@ const generateUrl = (params: Params, path = '/plants/search') => {
     url.searchParams.set(`${key}`, `${value}`);
   });
 
-  const endpoint = url.toString();
-
-  console.log(endpoint);
   return url;
 };
 
